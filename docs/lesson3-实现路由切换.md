@@ -41,6 +41,16 @@ export default function App(props) {
     </div>
   );
 }
+
+function Layout(props) {
+  return (
+    <div className="border">
+      <Link to="/">首页</Link>
+      <Link to="/product">商品</Link>
+      <Outlet />
+    </div>
+  );
+}
 ```
 
 
@@ -50,10 +60,6 @@ export default function App(props) {
 #### BrowserRouter
 
 ```js
-import { useRef } from "react";
-import { createBrowserHistory } from "history";
-import Router from "./Router";
-
 export default function BrowserRouter({ children }) {
   let historyRef = useRef();
   if (historyRef.current == null) {
@@ -120,13 +126,14 @@ export default function Link({ to, children }) {
 当location改变的时候， `<Routes>`遍历它所有的子`Route`，然后渲染匹配的Route。 `<Route>`可能是嵌套的，嵌套路由也对应URL。父路由通过渲染 `<Outlet>`来渲染子路由。
 
 ```js
-import React from "react";
-import { useRoutes } from "./hooks";
-
 export function createRoutesFromChildren(children) {
   let routes = [];
 
   React.Children.forEach(children, (child) => {
+    if (!isValidElement(child)) {
+      return;
+    }
+
     let route = {
       element: child.props.element,
       path: child.props.path,
@@ -141,7 +148,6 @@ export function createRoutesFromChildren(children) {
 
   return routes;
 }
-
 export default function Routes({ children }) {
   let routes = createRoutesFromChildren(children);
 
