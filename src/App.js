@@ -1,4 +1,11 @@
-import { BrowserRouter, Routes, Route, Link, Outlet } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+  Outlet,
+  useNavigate,
+} from "react-router-dom";
 // import { BrowserRouter, Routes, Route, Link, Outlet } from "./mini-router6/";
 
 export default function App(props) {
@@ -47,9 +54,11 @@ function Product() {
 }
 
 function ProductDetail() {
+  let navigate = useNavigate();
   return (
     <div>
       <h1>ProductDetail</h1>
+      <button onClick={() => navigate("/")}>go home</button>
     </div>
   );
 }
