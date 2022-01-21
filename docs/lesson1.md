@@ -19,6 +19,8 @@ yarn add react-router-dom@6
 yarn start
 ```
 
+
+
 ### react-router简介
 
 react-router包含3个库，react-router、react-router-dom和react-router-native。react-router提供最基本的路由功能，实际使用的时候我们不会直接安装react-router，而是根据应用运行的环境选择安装react-router-dom（在浏览器中使用）或react-router-native（在rn中使用）。react-router-dom和react-router-native都依赖react-router，所以在安装时，react-router也会自动安装。
@@ -38,7 +40,7 @@ react-router包含3个库，react-router、react-router-dom和react-router-nativ
 
 
 
-### 导航
+### 路由跳转
 
 - [`Link`](https://reactrouter.com/docs/en/v6/api#link) 和 [`NavLink`](https://reactrouter.com/docs/en/v6/api#navlink) 渲染一个`<a>` 元素
 - [`useNavigate`](https://reactrouter.com/docs/en/v6/api#usenavigate) 和 [`Navigate`](https://reactrouter.com/docs/en/v6/api#navigate) 跳转导航，通常用在事件中，或者响应状态变化。
@@ -66,50 +68,60 @@ Link、NavLink。
 - [`useLinkPressHandler`](https://reactrouter.com/docs/en/v6/api#uselinkpresshandler) - 当你在 `react-router-native`中，创建一个自定义 `<Link>` 的时候，`useLinkClickHandler`返回一个导航事件
 - [`resolvePath`](https://reactrouter.com/docs/en/v6/api#resolvepath) - 基于给定的URL，返回一个相对路径 
 
-API
 
-#### Navigate
 
-渲染时候，改变当前的location，这个组件其实是useNavigation的包裹，并且接受同样的props。
+### 基础使用
 
 ```jsx
-import * as React from "react";
-import { Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+  Outlet,
+  useNavigate,
+} from "react-router-dom";
 
-class LoginForm extends React.Component {
-  state = { user: null, error: null };
+export default function App(props) {
+  return (
+    <div className="app">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="product" element={<Product />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </div>
+  );
+}
 
-  async handleSubmit(event) {
-    event.preventDefault();
-    try {
-      let user = await login(event.target);
-      this.setState({ user });
-    } catch (error) {
-      this.setState({ error });
-    }
-  }
+function Layout(props) {
+  return (
+    <div className="border">
+      <Link to="/">首页</Link>
+      <Link to="/product">商品</Link>
+      <Outlet />
+    </div>
+  );
+}
 
-  render() {
-    let { user, error } = this.state;
-    return (
-      <div>
-        {error && <p>{error.message}</p>}
-        {user && (
-          <Navigate to="/dashboard" replace={true} />
-        )}
-        <form onSubmit={event => this.handleSubmit(event)}>
-          <input type="text" name="username" />
-          <input type="password" name="password" />
-        </form>
-      </div>
-    );
-  }
+function Home() {
+  return (
+    <div>
+      <h1>Home</h1>
+    </div>
+  );
+}
+function Product() {
+  return (
+    <div>
+      <h1>Product</h1>
+    </div>
+  );
 }
 ```
-
-#### Outlet
-
- `<Outlet>`用在父路由中，这样在渲染子路由的时候，内部嵌套的UI也会被渲染。如果父路由是精确匹配， `<Outlet>`则会渲染一个标记index的子路由，如果没有index的子路由，那就什么都不渲染。
 
 
 
@@ -120,19 +132,15 @@ class LoginForm extends React.Component {
 当location改变的时候， `<Routes>`遍历它所有的子`Route`，然后渲染匹配的Route。 `<Route>`可能是嵌套的，嵌套路由也对应URL。父路由通过渲染 `<Outlet>`来渲染子路由。
 
 ```jsx
-<Routes>
-  <Route path="/" element={<Dashboard />}>
-    <Route
-      path="messages"
-      element={<DashboardMessages />}
-    />
-    <Route path="tasks" element={<DashboardTasks />} />
-  </Route>
-  <Route path="about" element={<AboutPage />} />
-</Routes>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="product" element={<Product />} />
+          </Route>
+        </Routes>
 ```
 
-默认的 `<Route element>` is an [`Outlet`](https://reactrouter.com/docs/en/v6/api#outlet)，这意味着即使没有明确的 `element`，路由也可以渲染它的子节点。因此我们可以在没有嵌套UI的情况下嵌套路径。
+默认的 `<Route element>` 是一个 [`Outlet`](https://reactrouter.com/docs/en/v6/api#outlet)，这意味着即使没有明确的 `element`，路由也可以渲染它的子节点。因此我们可以在没有嵌套UI的情况下嵌套路径。
 
 ```jsx
 <Route path="users">
@@ -140,13 +148,17 @@ class LoginForm extends React.Component {
 </Route>
 ```
 
-### 配置路由
+### 
+
+#### Outlet
+
+ `<Outlet>`用在父路由中，这样在渲染子路由的时候，内部嵌套的UI也会被渲染。如果父路由是精确匹配， `<Outlet>`则会渲染一个标记index的子路由，如果没有index的子路由，那就什么都不渲染。
 
 
 
 ### 嵌套路由与动态路由
 
-RootRoutes中路由配置：
+路由配置：
 
 ```jsx
 <Route path="product" element={<Product />}>
@@ -154,35 +166,37 @@ RootRoutes中路由配置：
 </Route>
 ```
 
-父路由：
+组件渲染页面：
 
 ```jsx
-export default function Product(props) {
-  const navigate = useNavigate();
-
+function Product() {
   return (
     <div>
-      <h3>Product</h3>
-      <button onClick={() => navigate("/product/123")}>go detail</button>
+      <h1>Product</h1>
+      <Link to="123">商品详情</Link>
       <Outlet />
     </div>
   );
 }
-```
 
-子路由以及动态路由：
-
-```jsx
-export default function ProductDetail(props) {
-  const { id } = useParams();
-
+function ProductDetail() {
+  let navigate = useNavigate();
   return (
     <div>
-      <h3>ProductDetail:{id}</h3>
+      <h1>ProductDetail</h1>
+			<button onClick={() => navigate("/")}>go home</button>      
     </div>
   );
 }
 ```
 
 
+
+### 404
+
+path设置为*。（注意与router4和router5不同）
+
+```jsx
+<Route path="*" element={<NoMatch />} />
+```
 
