@@ -1,10 +1,12 @@
-# React Router6从入门到精通
+# 初步认识React Router6
+
+
 
 ## 资源
 
 1. [react-router6文档](https://reactrouter.com/docs/en/v6)
 2. [github](https://github.com/remix-run/react-router)
-2. [本文代码](https://github.com/bubucuo/router6-tutorial)
+2. [本文代码](https://github.com/bubucuo/router6-nut)
 
 
 
@@ -13,8 +15,8 @@
 ### 项目初始化
 
 ```
-npx create-react-app router-tutorial
-cd router-tutorial
+npx create-react-app router6-nut
+cd router6-nut
 yarn add react-router-dom@6
 yarn start
 ```
@@ -24,6 +26,8 @@ yarn start
 ### react-router简介
 
 react-router包含3个库，react-router、react-router-dom和react-router-native。react-router提供最基本的路由功能，实际使用的时候我们不会直接安装react-router，而是根据应用运行的环境选择安装react-router-dom（在浏览器中使用）或react-router-native（在rn中使用）。react-router-dom和react-router-native都依赖react-router，所以在安装时，react-router也会自动安装。
+
+
 
 ### 路由
 
@@ -148,7 +152,7 @@ function Product() {
 </Route>
 ```
 
-### 
+
 
 #### Outlet
 
