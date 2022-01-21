@@ -30,7 +30,6 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link,
 } from "./mini-react-router";
 
 export default function App(props) {
@@ -82,9 +81,8 @@ function NoMatch() {
 import BrowserRouter from "./BrowserRouter";
 import Routes from "./Routes";
 import Route from "./Route";
-import Link from "./Link";
 
-export { BrowserRouter, Routes, Route, Link };
+export { BrowserRouter, Routes, Route };
 ```
 
 
