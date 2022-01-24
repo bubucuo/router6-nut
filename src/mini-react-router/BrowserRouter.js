@@ -1,5 +1,5 @@
 import { createBrowserHistory } from "history";
-import { useRef } from "react";
+import { useRef, useState, useLayoutEffect } from "react";
 
 import Router from "./Router";
 
@@ -12,5 +12,18 @@ export default function BrowserRouter({ children }) {
 
   let history = historyRef.current;
 
-  return <Router children={children} naviagtor={history} />;
+  const [state, setState] = useState({ location: history.location });
+
+  useLayoutEffect(() => {
+    const unlisten = history.listen(setState);
+    // history.listen((location) => {
+    //   setState({ location });
+    // });
+
+    return unlisten;
+  }, [history]);
+
+  return (
+    <Router children={children} naviagtor={history} location={state.location} />
+  );
 }

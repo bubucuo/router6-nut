@@ -24,8 +24,6 @@ export function createRoutesFromChildren(children) {
   return routes;
 }
 export default function Routes({ children }) {
-  console.log("children", children); //sy-log
-
   let routes = createRoutesFromChildren(children);
 
   return useRoutes(routes);

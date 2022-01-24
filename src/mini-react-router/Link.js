@@ -8,5 +8,9 @@ export default function Link({ to, children }) {
     // 跳转
     navigate(to);
   };
-  return <a onClick={handleClick}>{children}</a>;
+  return (
+    <a href={to} onClick={handleClick}>
+      {children}
+    </a>
+  );
 }
