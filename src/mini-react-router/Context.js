@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-const NaviagtionContext = createContext();
-const RouteContext = createContext();
+const NavigationContext = createContext();
+const RouteContext = createContext({ matches: [], outlet: null });
 
-export { NaviagtionContext, RouteContext };
+export { NavigationContext, RouteContext };

@@ -12,6 +12,7 @@ export function createRoutesFromChildren(children) {
     let route = {
       element: child.props.element,
       path: child.props.path,
+      index: child.props.index,
     };
 
     if (child.props.children) {
