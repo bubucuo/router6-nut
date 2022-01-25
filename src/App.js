@@ -1,5 +1,7 @@
 import {
   BrowserRouter as Router,
+  // HashRouter as Router,
+  // MemoryRouter as Router,
   Routes,
   Route,
   Link,
@@ -17,6 +19,7 @@ import {
 //   Outlet,
 //   useParams,
 //   useNavigate,
+//   useResolvedPath,
 // } from "./mini-react-router";
 
 export default function App(props) {
