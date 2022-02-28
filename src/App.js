@@ -1,17 +1,19 @@
 import {
-  BrowserRouter,
+  BrowserRouter as Router,
   Routes,
   Route,
   Link,
   Outlet,
   useNavigate,
+  useParams,
+  useResolvedPath,
 } from "react-router-dom";
 // import { BrowserRouter, Routes, Route, Link, Outlet } from "./mini-router6/";
 
 export default function App(props) {
   return (
     <div className="app">
-      <BrowserRouter>
+      <Router>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
@@ -21,16 +23,16 @@ export default function App(props) {
             <Route path="*" element={<NoMatch />} />
           </Route>
         </Routes>
-      </BrowserRouter>
+      </Router>
     </div>
   );
 }
 
-function Layout(props) {
+function Layout() {
   return (
-    <div className="border">
+    <div>
       <Link to="/">首页</Link>
-      <Link to="/product">商品</Link>
+      <Link to="product">商品</Link>
       <Outlet />
     </div>
   );
@@ -43,22 +45,32 @@ function Home() {
     </div>
   );
 }
+
 function Product() {
+  const path = useResolvedPath("123");
+  console.log("path", path); //sy-log
   return (
     <div>
       <h1>Product</h1>
-      <Link to="123">商品详情</Link>
+      <Link to="123">详情</Link>
       <Outlet />
     </div>
   );
 }
 
 function ProductDetail() {
-  let navigate = useNavigate();
+  const params = useParams();
+  const navigate = useNavigate();
   return (
     <div>
-      <h1>ProductDetail</h1>
-      <button onClick={() => navigate("/")}>go home</button>
+      <h1>ProductDetail: {params.id}</h1>
+      <button
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        go home
+      </button>
     </div>
   );
 }

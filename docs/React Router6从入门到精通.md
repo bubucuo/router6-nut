@@ -13,11 +13,13 @@
 ### 项目初始化
 
 ```
-npx create-react-app router-tutorial
-cd router-tutorial
+npx create-react-app router6-nut
+cd router6-nut
 yarn add react-router-dom@6
 yarn start
 ```
+
+
 
 ### react-router简介
 
