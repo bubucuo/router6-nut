@@ -1,5 +1,6 @@
 import {
   BrowserRouter as Router,
+  // HashRouter as Router,
   Routes,
   Route,
   Link,
@@ -18,6 +19,7 @@ export default function App(props) {
             <Route path="product" element={<Product />}>
               <Route path=":id" element={<ProductDetail />} />
             </Route>
+
             <Route path="*" element={<NoMatch />} />
           </Route>
         </Routes>
@@ -29,8 +31,10 @@ export default function App(props) {
 function Layout() {
   return (
     <div>
+      <h1>Layout</h1>
       <Link to="/">首页</Link>
       <Link to="/product">商品</Link>
+
       <Outlet />
     </div>
   );
@@ -49,6 +53,7 @@ function Product() {
     <div>
       <h1>Product</h1>
       <Link to="/product/123">商品详情</Link>
+
       <Outlet />
     </div>
   );
