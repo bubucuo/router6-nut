@@ -1,5 +1,7 @@
 import {
   BrowserRouter as Router,
+  // HashRouter as Router,
+  // MemoryRouter as Router,
   Routes,
   Route,
   Link,
@@ -8,7 +10,17 @@ import {
   useParams,
   useResolvedPath,
 } from "react-router-dom";
-// import { BrowserRouter, Routes, Route, Link, Outlet } from "./mini-router6/";
+
+// import {
+//   BrowserRouter as Router,
+//   Routes,
+//   Route,
+//   Link,
+//   Outlet,
+//   useParams,
+//   useNavigate,
+//   useResolvedPath,
+// } from "./mini-react-router";
 
 export default function App(props) {
   return (
@@ -17,6 +29,7 @@ export default function App(props) {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
+            {/* <Route path="product" element={<Product />} /> */}
             <Route path="product" element={<Product />}>
               <Route path=":id" element={<ProductDetail />} />
             </Route>
