@@ -1,18 +1,8 @@
-import React from "react";
+import createRoutesFromChildren from "./createRoutesFromChildren";
 import { useRoutes } from "./hooks";
 
 export default function Routes({ children }) {
-  const routes = [];
+  const routes = createRoutesFromChildren(children);
 
-  React.Children.forEach(children, (child) => {
-    const route = {
-      path: child.props.path,
-      element: child.props.element,
-    };
-
-    routes.push(route);
-  });
-
-  // 组件
   return useRoutes(routes);
 }
