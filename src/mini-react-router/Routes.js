@@ -2,16 +2,17 @@ import React from "react";
 import { useRoutes } from "./hooks";
 
 export default function Routes({ children }) {
-  let routes = [];
+  const routes = [];
 
   React.Children.forEach(children, (child) => {
-    let route = {
-      element: child.props.element,
+    const route = {
       path: child.props.path,
+      element: child.props.element,
     };
 
     routes.push(route);
   });
 
+  // 组件
   return useRoutes(routes);
 }
