@@ -1,37 +1,33 @@
 import React from "react";
+import { matchRoutes } from "react-router-dom";
 import { NavigationContext, RouteContext } from "./Context";
 import Outlet from "./Outlet";
 import { normalizePathname } from "./utils";
 
 export function useRoutes(routes) {
   const location = useLocation();
-  console.log("location", location); //sy-log
 
   const pathname = location.pathname;
 
-  return routes.map((route) => {
-    const match = pathname.startsWith(route.path);
+  const matches = matchRoutes(routes, { pathname });
+  // console.log("matches", matches); //sy-log
 
-    // todo children
-    console.log("route", pathname, route); //sy-log
+  return renderMatches(matches);
+}
+
+function renderMatches(matches) {
+  if (matches == null) {
+    return null;
+  }
+
+  return matches.reduceRight((outlet, match) => {
     return (
-      match &&
-      route.children.map((child) => {
-        let m = normalizePathname(child.path) === pathname;
-
-        return (
-          m && (
-            <RouteContext.Provider
-              value={{ outlet: child.element }}
-              children={
-                route.element !== undefined ? route.element : <Outlet />
-              }
-            />
-          )
-        );
-      })
+      <RouteContext.Provider
+        value={{ outlet, matches }}
+        children={match.route.element || outlet}
+      />
     );
-  });
+  }, null);
 }
 
 export function useNavigate() {
@@ -49,4 +45,11 @@ export function useLocation() {
 export function useOutlet() {
   const { outlet } = React.useContext(RouteContext);
   return outlet;
+}
+
+export function useParams() {
+  const { matches } = React.useContext(RouteContext);
+
+  const routeMatch = matches[matches.length - 1];
+  return routeMatch ? routeMatch.params : {};
 }
