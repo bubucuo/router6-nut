@@ -1,3 +1,5 @@
+import React from "react";
+
 // import {
 //   BrowserRouter as Router,
 //   Routes,
@@ -24,6 +26,10 @@ import {
   useLocation,
 } from "./mini-react-router";
 
+// import About from "./pages/About";
+
+const About = React.lazy(() => import("./pages/About"));
+
 export default function App(props) {
   return (
     <div className="app">
@@ -44,6 +50,16 @@ export default function App(props) {
                 }
               />
               <Route path="login" element={<Login />} />
+
+              <Route
+                path="about"
+                element={
+                  <React.Suspense fallback={<h1>loading...</h1>}>
+                    <About />
+                  </React.Suspense>
+                }
+              />
+
               <Route path="*" element={<NoMatch />} />
             </Route>
           </Routes>
@@ -59,7 +75,9 @@ function Layout(props) {
       <Link to="/">首页</Link>
       <Link to="/product">商品</Link>
       <Link to="/user">用户中心</Link>
-      <Link to="/login">登录</Link>
+      {/* <Link to="/login">登录</Link> */}
+      <Link to="/about">关于</Link>
+
       <Outlet />
     </div>
   );
