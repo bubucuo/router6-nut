@@ -1,15 +1,15 @@
-import React from "react";
-import { matchRoutes } from "react-router-dom";
-import { NavigationContext, RouteContext } from "./Context";
+import React, {useCallback} from "react";
+import {matchRoutes} from "react-router-dom";
+import {NavigationContext, RouteContext} from "./Context";
 import Outlet from "./Outlet";
-import { normalizePathname } from "./utils";
+import {normalizePathname} from "./utils";
 
 export function useRoutes(routes) {
   const location = useLocation();
 
   const pathname = location.pathname;
 
-  const matches = matchRoutes(routes, { pathname });
+  const matches = matchRoutes(routes, {pathname});
   // console.log("matches", matches); //sy-log
 
   return renderMatches(matches);
@@ -23,7 +23,7 @@ function renderMatches(matches) {
   return matches.reduceRight((outlet, match) => {
     return (
       <RouteContext.Provider
-        value={{ outlet, matches }}
+        value={{outlet, matches}}
         children={match.route.element || outlet}
       />
     );
@@ -32,23 +32,37 @@ function renderMatches(matches) {
 
 export function useNavigate() {
   // 跳转
-  const { naviagtor } = React.useContext(NavigationContext);
+  const {naviagtor} = React.useContext(NavigationContext);
 
-  return naviagtor.push;
+  const navigate = useCallback(
+    (to, options = {}) => {
+      if (typeof to === "number") {
+        naviagtor.go(to);
+        return;
+      }
+      (!!options.replace ? naviagtor.replace : naviagtor.push)(
+        to,
+        options.state
+      );
+    },
+    [naviagtor]
+  );
+
+  return navigate;
 }
 
 export function useLocation() {
-  const { location } = React.useContext(NavigationContext);
+  const {location} = React.useContext(NavigationContext);
   return location;
 }
 // children
 export function useOutlet() {
-  const { outlet } = React.useContext(RouteContext);
+  const {outlet} = React.useContext(RouteContext);
   return outlet;
 }
 
 export function useParams() {
-  const { matches } = React.useContext(RouteContext);
+  const {matches} = React.useContext(RouteContext);
 
   const routeMatch = matches[matches.length - 1];
   return routeMatch ? routeMatch.params : {};
