@@ -4,7 +4,13 @@ import Route from "./Route";
 import Link from "./Link";
 import Outlet from "./Outlet";
 import Navigate from "./Navigate";
-import {useNavigate, useParams, useLocation} from "./hooks";
+import {
+  useNavigate,
+  useParams,
+  useLocation,
+  useMatch,
+  useResolvedPath,
+} from "./hooks";
 
 export {
   BrowserRouter,
@@ -16,4 +22,6 @@ export {
   useNavigate,
   useParams,
   useLocation,
+  useMatch,
+  useResolvedPath,
 };

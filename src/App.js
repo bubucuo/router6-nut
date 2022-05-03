@@ -6,13 +6,16 @@ import React from "react";
 //   Route,
 //   Link,
 //   Outlet,
+//   NavLink,
 //   useNavigate,
 //   useParams,
 //   Navigate,
 //   useLocation,
+//   useMatch,
+//   useResolvedPath,
 // } from "react-router-dom";
 
-import {AuthProvider, useAuth} from "./auth";
+import { AuthProvider, useAuth } from "./auth";
 
 import {
   BrowserRouter as Router,
@@ -24,6 +27,8 @@ import {
   useNavigate,
   useParams,
   useLocation,
+  useMatch,
+  useResolvedPath,
 } from "./mini-react-router";
 
 // import About from "./pages/About";
@@ -69,14 +74,30 @@ export default function App(props) {
   );
 }
 
+function CustomLink({ to, ...rest }) {
+  const resolved = useResolvedPath(to);
+  console.log("to", to, resolved); //sy-log
+  const match = useMatch({ path: resolved.pathname, end: true });
+
+  return <Link to={to} {...rest} style={{ color: match ? "red" : "black" }} />;
+
+  // return (
+  //   <NavLink
+  //     to={to}
+  //     {...rest}
+  //     style={({ isActive }) => ({ color: isActive ? "red" : "black" })}
+  //   />
+  // );
+}
+
 function Layout(props) {
   return (
     <div className="border">
-      <Link to="/">首页</Link>
-      <Link to="/product">商品</Link>
-      <Link to="/user">用户中心</Link>
-      {/* <Link to="/login">登录</Link> */}
-      <Link to="/about">关于</Link>
+      <CustomLink to="/">首页</CustomLink>
+      <CustomLink to="/product">商品</CustomLink>
+      <CustomLink to="/user">用户中心</CustomLink>
+      {/* <CustomLink to="/login">登录</CustomLink> */}
+      <CustomLink to="/about">关于</CustomLink>
 
       <Outlet />
     </div>
@@ -96,7 +117,8 @@ function Product() {
     <div>
       <h1>Product</h1>
 
-      <Link to="/product/123">商品详情</Link>
+      <CustomLink to="/product/123">商品详情</CustomLink>
+      {/* <CustomLink to="123">商品详情</CustomLink> */}
 
       <Outlet />
     </div>
@@ -115,12 +137,12 @@ function ProductDetail() {
   );
 }
 
-function RequiredAuth({children}) {
+function RequiredAuth({ children }) {
   const auth = useAuth();
   const location = useLocation();
 
   if (!auth.user) {
-    return <Navigate to={"/login"} state={{from: location}} replace={true} />;
+    return <Navigate to={"/login"} state={{ from: location }} replace={true} />;
   }
 
   return children;
@@ -137,7 +159,8 @@ function User() {
       <button
         onClick={() => {
           auth.signout(() => navigate("/login"));
-        }}>
+        }}
+      >
         退出登录
       </button>
     </div>
@@ -157,8 +180,8 @@ function Login() {
   const submit = (e) => {
     const formData = new FormData(e.currentTarget);
     const username = formData.get("username");
-    auth.signin({username}, () => {
-      navigate(from, {replace: true});
+    auth.signin({ username }, () => {
+      navigate(from, { replace: true });
     });
   };
 
