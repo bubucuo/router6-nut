@@ -1,32 +1,31 @@
 import React from "react";
 
-// import {
-//   BrowserRouter as Router,
-//   Routes,
-//   Route,
-//   Link,
-//   Outlet,
-//   useNavigate,
-//   useParams,
-//   Navigate,
-//   useLocation,
-// } from "react-router-dom";
-
-import {AuthProvider, useAuth} from "./auth";
-
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Link,
   Outlet,
-  Navigate,
   useNavigate,
   useParams,
+  Navigate,
   useLocation,
-} from "./mini-react-router";
+} from "react-router-dom";
 
+import { AuthProvider, useAuth } from "./auth";
 // import About from "./pages/About";
+
+// import {
+//   BrowserRouter as Router,
+//   Routes,
+//   Route,
+//   Link,
+//   Outlet,
+//   Navigate,
+//   useNavigate,
+//   useParams,
+//   useLocation,
+// } from "./mini-react-router";
 
 const About = React.lazy(() => import("./pages/About"));
 
@@ -50,7 +49,6 @@ export default function App(props) {
                 }
               />
               <Route path="login" element={<Login />} />
-
               <Route
                 path="about"
                 element={
@@ -115,12 +113,12 @@ function ProductDetail() {
   );
 }
 
-function RequiredAuth({children}) {
+function RequiredAuth({ children }) {
   const auth = useAuth();
   const location = useLocation();
 
   if (!auth.user) {
-    return <Navigate to={"/login"} state={{from: location}} replace={true} />;
+    return <Navigate to={"/login"} state={{ from: location }} replace={true} />;
   }
 
   return children;
@@ -137,7 +135,8 @@ function User() {
       <button
         onClick={() => {
           auth.signout(() => navigate("/login"));
-        }}>
+        }}
+      >
         退出登录
       </button>
     </div>
@@ -157,8 +156,8 @@ function Login() {
   const submit = (e) => {
     const formData = new FormData(e.currentTarget);
     const username = formData.get("username");
-    auth.signin({username}, () => {
-      navigate(from, {replace: true});
+    auth.signin({ username }, () => {
+      navigate(from, { replace: true });
     });
   };
 
